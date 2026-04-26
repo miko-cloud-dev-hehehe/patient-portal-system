@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Appointments{% endblock %}
+{% block content %}
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Appointments</p>
+        <h1>Manage your appointments</h1>
+        <p class="subtext">You can create appointments and cancel pending ones.</p>
+    </div>
+</section>
+
+<section class="cards-grid">
+    <div class="card">
+        <h3>Add Appointment</h3>
+        <form method="POST" class="form-grid">
+            <label>Appointment Name</label>
+            <input type="text" name="name" placeholder="e.g. Blood Pressure Test" required>
+            <label>Date</label>
+            <input type="date" name="date" required>
+            <label>Schedule</label>
+            <select name="schedule" class="select-box" required>
+                <option value="">Choose a schedule</option>
+                <option value="Morning">Morning</option>
+                <option value="Afternoon">Afternoon</option>
+            </select>
+            <label>Notes</label>
+            <input type="text" name="notes" placeholder="Optional note">
+            <button type="submit" class="btn-primary">Save Appointment</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Your Appointment List</h3>
+        {% if appointments %}
+            {% for item in appointments %}
+                <div class="appointment-row">
+                    <div class="appointment-main">
+                        <strong>{{ item.name }}</strong>
+                        <div class="small-text">{{ item.appointment_date }} - {{ item.schedule }}</div>
+                        {% if item.notes %}<div class="small-text muted">{{ item.notes }}</div>{% endif %}
+                    </div>
+                    <div class="appointment-side">
+                        <span class="status-badge {{ item.status|lower }}">{{ item.status }}</span>
+                        {% if item.status == 'Pending' %}
+                        <form method="POST" action="/appointments/{{ item.id }}/cancel">
+                            <button type="submit" class="btn-danger">Cancel</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No appointments found.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<section class="auth-card">
+    <div class="auth-left">
+        <p class="eyebrow">New User</p>
+        <h1>Create your client account</h1>
+        <p class="subtext">Clients can create appointments and view results after the admin finishes them.</p>
+    </div>
+    <div class="auth-right">
+        <h2>Sign Up</h2>
+        <form method="POST" class="form-grid">
+            <label>Full Name</label>
+            <input type="text" name="full_name" placeholder="Enter full name" required>
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Choose a username" required>
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Create a password" required>
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" placeholder="Confirm your password" required>
+            <button type="submit" class="btn-primary">Create Account</button>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="/">Login here</a></p>
+    </div>
+</section>
+{% endblock %}

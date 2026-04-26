@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Dashboard</p>
+        <h1>Hello, {{ user.full_name }}</h1>
+        {% if user.role == 'admin' %}
+        <p class="subtext">You can review client appointments and complete them with results.</p>
+        {% else %}
+        <p class="subtext">Here is your personal summary.</p>
+        {% endif %}
+    </div>
+    {% if user.role != 'admin' %}
+    <form action="/search" method="GET" class="search-inline">
+        <input type="text" name="q" placeholder="Search: sugar, heart rate, blood pressure">
+        <button type="submit" class="btn-primary">Search</button>
+    </form>
+    {% endif %}
+</section>
+
+<section class="cards-grid">
+    <div class="card">
+        <h3>{% if user.role == 'admin' %}Client Appointments{% else %}Your Appointments{% endif %}</h3>
+        {% if appointments %}
+            {% for item in appointments %}
+                <div class="list-item">
+                    <div>
+                        <strong>{{ item.name }}</strong>
+                        <div class="small-text">{{ item.appointment_date }} - {{ item.schedule }}</div>
+                        {% if user.role == 'admin' %}
+                        <div class="small-text">Client: {{ item.full_name }}</div>
+                        {% endif %}
+                    </div>
+                    <span class="status-badge {{ item.status|lower }}">{{ item.status }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No appointments yet.</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        {% if user.role == 'admin' %}
+        <h3>Admin Notes</h3>
+        <p>Open the appointments page to confirm completed appointments and enter the result and explanation.</p>
+        {% else %}
+        <h3>Your Recent Records</h3>
+        {% if records %}
+            {% for record in records %}
+                <div class="record-chip {{ record.status|lower }}">
+                    <strong>{{ record.test_name }}</strong>
+                    <span>{{ record.status }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No medical records yet. Wait for the admin to complete your appointment.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

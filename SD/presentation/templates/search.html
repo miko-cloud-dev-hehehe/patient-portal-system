@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Smart Search{% endblock %}
+{% block content %}
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Smart Search</p>
+        <h1>Search your records</h1>
+        <p class="subtext">Try keywords like sugar, sugar level, heart rate, blood pressure, cholesterol, blood test, cbc, or hemoglobin.</p>
+    </div>
+    <form action="/search" method="GET" class="search-inline">
+        <input type="text" name="q" value="{{ q }}" placeholder="Enter a keyword">
+        <button type="submit" class="btn-primary">Search</button>
+    </form>
+</section>
+
+<section class="quick-actions">
+    <a href="/search?q=sugar" class="action-btn">Sugar</a>
+    <a href="/search?q=sugar%20level" class="action-btn">Sugar Level</a>
+    <a href="/search?q=heart%20rate" class="action-btn">Heart Rate</a>
+    <a href="/search?q=blood%20pressure" class="action-btn">Blood Pressure</a>
+    <a href="/search?q=cholesterol" class="action-btn">Cholesterol</a>
+    <a href="/search?q=cbc" class="action-btn">CBC</a>
+    <a href="/search?q=hemoglobin" class="action-btn">Hemoglobin</a>
+</section>
+
+<section class="record-grid">
+    {% if results %}
+        {% for result in results %}
+        <div class="card">
+            <div class="record-top">
+                <h3>{{ result.test_name }}</h3>
+                <span class="status-badge {{ result.status|lower }}">{{ result.status }}</span>
+            </div>
+            <p><strong>Value:</strong> {{ result.value }}</p>
+            <p><strong>Explanation:</strong> {{ result.plain_explanation }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="card"><p>No matching records found{% if q %} for <strong>{{ q }}</strong>{% endif %}.</p></div>
+    {% endif %}
+</section>
+{% endblock %}

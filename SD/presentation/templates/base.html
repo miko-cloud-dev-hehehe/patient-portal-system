@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Patient Portal{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script defer src="{{ url_for('static', filename='js/flash.js') }}"></script>
+</head>
+<body>
+    <div class="layout">
+        {% if session.get('user') %}
+        <aside class="sidebar">
+            <div class="brand">Patient Portal</div>
+            <div class="user-box">
+                <div class="user-name">{{ session['user']['full_name'] }}</div>
+                <div class="user-email">{{ session['user']['email'] }}</div>
+                <div class="role-badge">{{ session['user']['role']|upper }}</div>
+            </div>
+            <nav class="nav-links">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/appointments">Appointments</a>
+                {% if session['user']['role'] != 'admin' %}
+                <a href="/records">Medical Records</a>
+                <a href="/search?q=sugar">Smart Search</a>
+                {% endif %}
+                <a href="/logout">Logout</a>
+            </nav>
+        </aside>
+        {% endif %}
+        <main class="main-content {% if not session.get('user') %}auth-layout{% endif %}">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="toast-container">
+                  {% for category, message in messages %}
+                    <div class="toast-message toast-{{ category }}">{{ message }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

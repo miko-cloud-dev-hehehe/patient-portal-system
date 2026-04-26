@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Medical Records{% endblock %}
+{% block content %}
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Records</p>
+        <h1>Your medical records</h1>
+        <p class="subtext">Records appear after the admin marks your appointment as done.</p>
+    </div>
+</section>
+
+<section class="record-grid">
+    {% if records %}
+        {% for record in records %}
+        <div class="card">
+            <div class="record-top">
+                <h3>{{ record.test_name }}</h3>
+                <span class="status-badge {{ record.status|lower }}">{{ record.status }}</span>
+            </div>
+            <p><strong>Result:</strong> {{ record.value }}</p>
+            <p><strong>Explanation:</strong> {{ record.plain_explanation }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="card"><p>No records yet. Wait for the admin to complete your appointment.</p></div>
+    {% endif %}
+</section>
+{% endblock %}

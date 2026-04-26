@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Admin Appointments{% endblock %}
+{% block content %}
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Admin Appointments</p>
+        <h1>Review client appointments</h1>
+        <p class="subtext">Only the admin can mark an appointment as done and enter the result details.</p>
+    </div>
+</section>
+
+<section class="record-grid">
+    {% if appointments %}
+        {% for item in appointments %}
+        <div class="card">
+            <div class="record-top">
+                <h3>{{ item.name }}</h3>
+                <span class="status-badge {{ item.status|lower }}">{{ item.status }}</span>
+            </div>
+            <p><strong>Client:</strong> {{ item.full_name }} ({{ item.username }})</p>
+            <p><strong>Date:</strong> {{ item.appointment_date }}</p>
+            <p><strong>Schedule:</strong> {{ item.schedule }}</p>
+            {% if item.notes %}<p><strong>Notes:</strong> {{ item.notes }}</p>{% endif %}
+
+            {% if item.status == 'Pending' %}
+            <form method="POST" action="/appointments/{{ item.id }}/done" class="form-grid top-gap">
+                <label>Test Name</label>
+                <input type="text" name="test_name" placeholder="e.g. Blood Sugar" required>
+                <label>Result</label>
+                <input type="text" name="value" placeholder="e.g. 110 mg/dL" required>
+                <label>Status</label>
+                <select name="status" class="select-box" required>
+                    <option value="">Choose status</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Borderline">Borderline</option>
+                    <option value="High">High</option>
+                </select>
+                <label>Explanation</label>
+                <input type="text" name="plain_explanation" placeholder="Explain the result clearly" required>
+                <button type="submit" class="btn-success wide-btn">Mark as Done and Save Result</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="card"><p>No client appointments found.</p></div>
+    {% endif %}
+</section>
+{% endblock %}

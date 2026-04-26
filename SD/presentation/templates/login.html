@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<section class="auth-card">
+    <div class="auth-left">
+        <p class="eyebrow">Healthcare Access</p>
+        <h1>Welcome back</h1>
+        <p class="subtext">Admin manages client appointments. Clients can book and cancel their own appointments.</p>
+    </div>
+    <div class="auth-right">
+        <h2>Login</h2>
+        <form method="POST" class="form-grid">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter username" required>
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+            <button type="submit" class="btn-primary">Login</button>
+        </form>
+        <p class="auth-switch">No account yet? <a href="/signup">Create one here</a></p>
+    </div>
+</section>
+{% endblock %}
